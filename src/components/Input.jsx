@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useImperativeHandle, useEffect } from 'react';
+import React, { useState, forwardRef, useImperativeHandle, useEffect, useRef } from 'react';
 import { cn } from '../lib/utils';
 import Icon from './Icon';
 
@@ -15,6 +15,7 @@ import Icon from './Icon';
  * @param {boolean | undefined} [props.disabled] - Whether the input is disabled.
  * @param {function | undefined} [props.onFocus] - Callback function to handle focus event.
  * @param {function | undefined} [props.onBlur] - Callback function to handle blur event.
+ * @param {function | undefined} [props.onChange] - Callback function to handle change event.
  * @param {boolean} [props.error] - Whether the input is in an error state.
  * @param {string | undefined} [props.errorColor] - The color of the border when the input is in an error state.
  * @param {string | undefined} [props.iconClassName] - Additional tailwindcss classes for custom styling of the icon.
@@ -90,6 +91,7 @@ const Input = forwardRef(({
     disabled,
     onFocus,
     onBlur,
+    onChange,
     error,
     errorColor,
     icon,
@@ -148,7 +150,6 @@ const Input = forwardRef(({
         setInputType((prevType) => (prevType === 'password' ? 'text' : 'password'));
     };
 
-
     /**
      * Imperative Handler to set/get Error Messsage to parent
      */
@@ -156,6 +157,7 @@ const Input = forwardRef(({
         getErrorMessage: () => errorMessage,
         setErrorMessage,
     }));
+
 
     return (
 
@@ -192,7 +194,10 @@ const Input = forwardRef(({
                     handleEvent(e, 'onBlur');
                     if (onBlur) onBlur(e);
                 }}
-                onChange={(e) => handleEvent(e, 'onChange')}
+                onChange={(e) => {
+                    handleEvent(e, 'onChange')
+                    if (onChange) onChange(e)
+                }}
                 disabled={disabled}
                 type={inputType}
                 {...rest}

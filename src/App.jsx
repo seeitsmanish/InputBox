@@ -1,18 +1,34 @@
+import { useRef, useState } from 'react';
 import './App.css'
 import Input from './components/Input';
 
 function App() {
 
-
   return (
     <div className={`h-screen w-screen bg-fuchsia-100 flex flex-col justify-center items-center gap-4`}>
+
       <Input
         type="email"
+        icon
         placeholder="Enter your email"
         errorFunctions={{
-          onBlur: (value) => {
+          'onChange': (value) => {
             if (!value.includes('@')) {
               return 'Invalid email address';
+            }
+            return false;
+          },
+        }}
+      />
+
+      <Input
+        icon
+        type="tel"
+        placeholder="Enter your Number"
+        errorFunctions={{
+          onBlur: (value) => {
+            if (value.length !== 10) {
+              return '10 digits are required';
             }
             return false;
           },
@@ -36,20 +52,9 @@ function App() {
       />
 
       <Input
-        type="text"
-        placeholder="Custom input"
-        outlineColor="green"
-        borderColor="gray"
-        error={true}
-        errorColor="red"
-        errorFunctions={{
-          onBlur: (value) => {
-            if (!value.trim()) {
-              return 'Input cannot be empty';
-            }
-            return false;
-          },
-        }}
+        outlineColor="black"
+        borderColor="green"
+        className='w-[230px]'
       />
     </div>
   );
